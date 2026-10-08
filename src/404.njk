@@ -1,0 +1,15 @@
+---
+layout: base.njk
+title: Page not found
+description: The page you were looking for is not here.
+permalink: /404.html
+---
+{% set hero = { image: "/assets/images/hero-church.jpg", heading: "Page not found", size: "short" } %}
+{% include "hero.njk" %}
+
+<section class="section text-center">
+  <div class="container container--narrow">
+    <p>The page you were looking for is not here. It may have moved when the site was rebuilt.</p>
+    <p><a class="button" href="/">Back to the home page</a></p>
+  </div>
+</section>

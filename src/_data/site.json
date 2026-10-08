@@ -1,0 +1,46 @@
+{
+  "name": "Pollok Baptist Church",
+  "shortName": "PBC",
+  "tagline": "Connecting people to Christ through love and discipleship",
+  "url": "https://www.pollokbaptist.org",
+  "timeZone": "America/Chicago",
+
+  "mailingAddress": {
+    "line1": "PO Box 85",
+    "city": "Pollok",
+    "state": "TX",
+    "zip": "75969"
+  },
+  "location": "Highway 7 West, about a quarter mile west of Highway 69 North, Pollok, Texas",
+  "mapEmbedUrl": "https://www.google.com/maps?q=Pollok+Baptist+Church,+Pollok,+TX+75969&output=embed",
+  "mapLinkUrl": "https://www.google.com/maps/search/?api=1&query=Pollok+Baptist+Church+Pollok+TX+75969",
+
+  "phone": "(936) 287-1033",
+  "phoneHref": "tel:+19362871033",
+  "email": "emily@pollokbaptist.org",
+
+  "serviceTimes": [
+    { "label": "Sunday Worship", "time": "10:45 AM" }
+  ],
+
+  "giving": {
+    "easyTitheUrl": "https://app.easytithe.com/App/Giving/pollokbaptistchurch"
+  },
+
+  "calendar": {
+    "source": "fixture",
+    "calendarId": "",
+    "apiKey": "",
+    "publicUrl": "",
+    "fixtureUrl": "/assets/data/calendar-fixture.json"
+  },
+  "announcements": {
+    "source": "live",
+    "publishedId": "2PACX-1vSt7Tnx1fpXbOo5XpTVmAWiLG_Hs8YdsUa2N8KLWAVts9T6_8qXn_tOPCDzs1knOozghsniWUgLHvO1",
+    "gid": "960850324",
+    "fixtureUrl": "/assets/data/announcements-fixture.csv"
+  },
+  "contactForm": {
+    "formspreeId": "REPLACE_WITH_FORMSPREE_ID"
+  }
+}

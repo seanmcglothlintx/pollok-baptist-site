@@ -1,0 +1,60 @@
+{
+  "asOf": "2026-10-01T12:00:00Z",
+  "note": "Sample data shaped like the Google Calendar API v3 events.list response. Used while site.dataSource is 'fixture'.",
+  "items": [
+    {
+      "id": "fixture-1",
+      "summary": "Sunday Worship",
+      "location": "Sanctuary",
+      "description": "Come as you are. Nursery available.",
+      "htmlLink": "",
+      "start": { "dateTime": "2026-10-04T10:45:00-05:00" },
+      "end": { "dateTime": "2026-10-04T12:00:00-05:00" }
+    },
+    {
+      "id": "fixture-3",
+      "summary": "Wednesday Bible Study",
+      "location": "Fellowship Hall",
+      "description": "Studying the book of James. Bring a Bible and a friend.",
+      "htmlLink": "",
+      "start": { "dateTime": "2026-10-07T18:30:00-05:00" },
+      "end": { "dateTime": "2026-10-07T19:30:00-05:00" }
+    },
+    {
+      "id": "fixture-4",
+      "summary": "Church Picnic",
+      "location": "Church grounds",
+      "description": "Bring a lawn chair and a side dish. The church provides the barbecue.",
+      "htmlLink": "",
+      "start": { "date": "2026-10-10" },
+      "end": { "date": "2026-10-11" }
+    },
+    {
+      "id": "fixture-5",
+      "summary": "Sunday Worship",
+      "location": "Sanctuary",
+      "description": "",
+      "htmlLink": "",
+      "start": { "dateTime": "2026-10-11T10:45:00-05:00" },
+      "end": { "dateTime": "2026-10-11T12:00:00-05:00" }
+    },
+    {
+      "id": "fixture-6",
+      "summary": "Fall Revival",
+      "location": "Sanctuary",
+      "description": "Guest speaker each evening at 7:00 PM. Nursery provided.",
+      "htmlLink": "",
+      "start": { "date": "2026-11-20" },
+      "end": { "date": "2026-11-23" }
+    },
+    {
+      "id": "fixture-old",
+      "summary": "An event that already happened",
+      "location": "",
+      "description": "This one should never show because it ended before asOf.",
+      "htmlLink": "",
+      "start": { "dateTime": "2026-09-27T10:30:00-05:00" },
+      "end": { "dateTime": "2026-09-27T12:00:00-05:00" }
+    }
+  ]
+}

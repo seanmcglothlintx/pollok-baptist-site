@@ -1,0 +1,16 @@
+---
+layout: base.njk
+title: Announcements
+description: News and announcements from Pollok Baptist Church.
+---
+{% set hero = { heading: "Announcements", tagline: "News from the church family", size: "short" } %}
+{% include "hero.njk" %}
+
+<section class="section">
+  <div class="container container--narrow">
+    <p class="page-intro">This list is kept up to date by the church office. Pinned items stay at the top; time-sensitive notices drop off after their date passes.</p>
+    <div id="announcements-list" class="data-mount" aria-live="polite">
+      <p class="data-message data-message--loading">Loading announcements&hellip;</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+---
+layout: base.njk
+title: Contact
+description: Get in touch with Pollok Baptist Church. Address, phone, email, directions and a contact form.
+---
+{% set hero = { image: "/assets/images/hero-contact.jpg", heading: "Get in touch", tagline: "Contact us if you have any questions", size: "short" } %}
+{% include "hero.njk" %}
+
+<section class="section">
+  <div class="container">
+    <h2 class="text-center">Contacts</h2>
+    <ul class="contact-cards">
+      <li class="contact-card">
+        <h3>Mailing address</h3>
+        <p>{{ site.mailingAddress.line1 }}<br>{{ site.mailingAddress.city }}, {{ site.mailingAddress.state }} {{ site.mailingAddress.zip }}</p>
+      </li>
+      <li class="contact-card">
+        <h3>Phone</h3>
+        <p><a href="{{ site.phoneHref }}">{{ site.phone }}</a></p>
+      </li>
+      <li class="contact-card">
+        <h3>Email</h3>
+        <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <h2>Send us a message</h2>
+        <form class="contact-form" action="https://formspree.io/f/{{ site.contactForm.formspreeId }}" method="POST">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" required autocomplete="name">
+
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" required autocomplete="email">
+
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="6" required></textarea>
+
+          <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <button class="button" type="submit">Send message</button>
+        </form>
+      </div>
+      <div>
+        <h2>Find us</h2>
+        <p>{{ site.location }}</p>
+        <ul class="service-times service-times--compact">
+          {% for s in site.serviceTimes %}
+            <li class="service-times__item"><span class="service-times__label">{{ s.label }}</span> <span class="service-times__time">{{ s.time }}</span></li>
+          {% endfor %}
+        </ul>
+        <div class="map-embed">
+          <iframe src="{{ site.mapEmbedUrl }}" title="Map to Pollok Baptist Church" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <p><a class="button" href="{{ site.mapLinkUrl }}" target="_blank" rel="noopener">Get directions</a></p>
+      </div>
+    </div>
+  </div>
+</section>

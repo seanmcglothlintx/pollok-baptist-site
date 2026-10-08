@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} - {{ site.name }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta property="og:title" content="{{ title }} - {{ site.name }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/images/hero-church.jpg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/assets/fonts/play-regular.css">
+  <link rel="stylesheet" href="/assets/fonts/open-sans.css">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script type="application/json" id="site-config">{{ {
+    timeZone: site.timeZone,
+    calendar: site.calendar,
+    announcements: site.announcements
+  } | dump | safe }}</script>
+</head>
+<body class="page page--{{ page.fileSlug or 'home' }}">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/" aria-label="{{ site.name }} home">
+        <img src="/assets/images/logo-white.png" alt="{{ site.name }}" width="500" height="146">
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          {% set navItems = [
+            { label: "Home", href: "/" },
+            { label: "About", href: "/about/" },
+            { label: "Events", href: "/events/" },
+            { label: "Announcements", href: "/announcements/" },
+            { label: "Contact", href: "/contact/" }
+          ] %}
+          {% for item in navItems %}
+            {% if item.href == page.url %}
+              <li><a href="{{ item.href }}" aria-current="page">{{ item.label }}</a></li>
+            {% else %}
+              <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if page.url == "/give/" %}
+            <li><a href="/give/" class="nav-cta" aria-current="page">Give</a></li>
+          {% else %}
+            <li><a href="/give/" class="nav-cta">Give</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  <footer class="site-footer">
+    <ul class="site-footer__links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about/">About Us</a></li>
+      <li><a href="/events/">Events</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="/give/">Give</a></li>
+    </ul>
+    <p class="site-footer__address">
+      {{ site.name }} &middot; {{ site.mailingAddress.line1 }}, {{ site.mailingAddress.city }}, {{ site.mailingAddress.state }} {{ site.mailingAddress.zip }} &middot;
+      <a href="{{ site.phoneHref }}">{{ site.phone }}</a>
+    </p>
+    <p class="site-footer__copyright">&copy; {{ buildYear }} {{ site.name }}</p>
+  </footer>
+
+  <script type="module" src="/assets/js/site.js"></script>
+</body>
+</html>
