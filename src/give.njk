@@ -3,30 +3,29 @@ layout: base.njk
 title: Give
 description: Ways to give to Pollok Baptist Church, online through EasyTithe, in person on Sunday, or by mail.
 ---
-{% set hero = { image: "/assets/images/hero-church.jpg", heading: "Give", tagline: "Every contribution supports our mission", size: "short" } %}
-{% include "hero.njk" %}
+{% set post = { heading: "Give", tagline: "Every contribution supports our mission" } %}
+{% include "post-header.njk" %}
 
-<section class="section text-center">
-  <div class="container container--narrow">
-    <p>Giving is an integral part of the Pollok Baptist Church experience, reflecting our commitment to extending Christ's love beyond the church walls.</p>
-    <p><a class="button button--large" href="{{ site.giving.easyTitheUrl }}" target="_blank" rel="noopener">Give online</a></p>
-    <p class="small">Online giving is handled securely by EasyTithe and opens in a new tab.</p>
-  </div>
+  <p class="text-center">Giving is an integral part of the Pollok Baptist Church experience, reflecting our commitment to extending Christ's love beyond the church walls.</p>
+  <ul class="actions special">
+    <li><a class="button primary large" href="{{ site.giving.easyTitheUrl }}" target="_blank" rel="noopener">Give online</a></li>
+  </ul>
+  <p class="small text-center">Online giving is handled securely by EasyTithe and opens in a new tab.</p>
 </section>
 
-<section class="section section--alt">
-  <div class="container container--narrow text-center">
+<section>
+  <header class="major">
     <h2>Ways to give</h2>
-    <div class="two-col two-col--centered">
-      <div>
-        <h3>Sunday services</h3>
-        <p>Simply place cash or checks in the offering plate during any Sunday service.</p>
-      </div>
-      <div>
-        <h3>Mail</h3>
-        <p>Send your donation to the church office:</p>
-        <p>{{ site.name }}<br>{{ site.mailingAddress.line1 }}<br>{{ site.mailingAddress.city }}, {{ site.mailingAddress.state }} {{ site.mailingAddress.zip }}</p>
-      </div>
+  </header>
+  <div class="row gtr-uniform text-center">
+    <div class="col-6 col-12-small">
+      <h3>Sunday services</h3>
+      <p>Simply place cash or checks in the offering plate during any Sunday service.</p>
+    </div>
+    <div class="col-6 col-12-small">
+      <h3>Mail</h3>
+      <p>Send your donation to the church office:</p>
+      <p>{{ site.name }}<br>{{ site.mailingAddress.line1 }}<br>{{ site.mailingAddress.city }}, {{ site.mailingAddress.state }} {{ site.mailingAddress.zip }}</p>
     </div>
   </div>
 </section>

@@ -1,0 +1,18 @@
+{#
+  Opens an inner page as a Massively "post".
+  Usage:
+    {% set post = {
+      heading: "...",                  h1
+      tagline: "...",                  optional line under the heading
+      image: "/assets/images/x.jpg",   optional wide photo under the header
+      imageAlt: "..."                  describe the photo, or omit if decorative
+    } %}
+    {% include "post-header.njk" %}
+  Close the post with </section> at the end of the page.
+#}
+<section class="post">
+  <header class="major">
+    <h1>{{ post.heading }}</h1>
+    {% if post.tagline %}<p>{{ post.tagline }}</p>{% endif %}
+  </header>
+  {% if post.image %}<div class="image main"><img src="{{ post.image }}" alt="{{ post.imageAlt or '' }}"></div>{% endif %}

@@ -3,17 +3,16 @@ layout: base.njk
 title: Events
 description: Upcoming services, fellowship meals, studies and special events at Pollok Baptist Church.
 ---
-{% set hero = { image: "/assets/images/banner-gathering.jpg", heading: "Events", tagline: "What's happening at Pollok Baptist Church", size: "short" } %}
-{% include "hero.njk" %}
+{% set post = { heading: "Events", tagline: "What's happening at Pollok Baptist Church", image: "/assets/images/events-fellowship-meal.jpg", imageAlt: "Church members sharing a fellowship meal at long tables" } %}
+{% include "post-header.njk" %}
 
-<section class="section">
-  <div class="container container--narrow">
-    <h2>Upcoming Events</h2>
-    <div id="events-list" class="data-mount" aria-live="polite">
-      <p class="data-message data-message--loading">Loading events&hellip;</p>
-    </div>
-    {% if site.calendar.publicUrl %}
-      <p class="text-center"><a class="button" href="{{ site.calendar.publicUrl }}" target="_blank" rel="noopener">Open in Google Calendar</a></p>
-    {% endif %}
+  <h2>Upcoming Events</h2>
+  <div id="events-list" class="data-mount" aria-live="polite">
+    <p class="data-message data-message--loading">Loading events&hellip;</p>
   </div>
+  {% if site.calendar.publicUrl %}
+    <ul class="actions special">
+      <li><a class="button" href="{{ site.calendar.publicUrl }}" target="_blank" rel="noopener">Open in Google Calendar</a></li>
+    </ul>
+  {% endif %}
 </section>

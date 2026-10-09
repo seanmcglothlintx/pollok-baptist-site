@@ -2,47 +2,43 @@
 layout: base.njk
 title: Connect & Grow
 description: Pollok Baptist Church is a small country church fifteen miles north of Lufkin in Deep East Texas. Sunday worship at 10:45 AM. Connecting people to Christ through love and discipleship.
+intro: true
 ---
-{% set hero = {
-  image: "/assets/images/hero-church.jpg",
-  tagline: site.tagline,
-  serviceLine: true,
-  cta: { label: "Plan your visit", href: "/contact/" },
-  size: "tall"
-} %}
-{% include "hero.njk" %}
-
 <section class="notice" aria-label="Announcements">
-  <div class="container">
-    <div id="notice-bar" class="notice-bar" data-limit="5" hidden></div>
-  </div>
+  <div id="notice-bar" class="notice-bar" data-limit="5" hidden></div>
 </section>
 
-<section class="section section--intro">
-  <div class="container container--narrow text-center">
-    <h2>A Small Country Church with a Big Heart</h2>
-    <p>Nestled in the piney woods of Deep East Texas, Pollok Baptist Church is located approximately fifteen miles north of the City of Lufkin. Surrounded by farm homes, pastures, and beautiful country scenery, the church building is located on Highway 7 West, approximately &frac14; mile west of Highway 69N.</p>
-    <p>The church, however, is scattered throughout the local surrounding communities. Even though considered a small country church, PBC has a big heart and a great love toward worshiping the Lord God Almighty, enjoys fellowshipping with one another and other local churches, and welcomes visitors with open arms.</p>
-    <p class="intro__location">{{ site.location }} &middot; <a href="{{ site.mapLinkUrl }}" target="_blank" rel="noopener">Get directions</a></p>
-  </div>
-</section>
+<article class="post featured">
+  <header class="major">
+    <h2>A Small Country Church <br>with a Big Heart</h2>
+    <p>Nestled in the piney woods of Deep East Texas, Pollok Baptist Church is located approximately fifteen miles north of the City of Lufkin.</p>
+  </header>
+  <p>Surrounded by farm homes, pastures, and beautiful country scenery, the church building is located on Highway 7 West, approximately &frac14; mile west of Highway 69N.</p>
+  <p>The church, however, is scattered throughout the local surrounding communities. Even though considered a small country church, PBC has a big heart and a great love toward worshiping the Lord God Almighty, enjoys fellowshipping with one another and other local churches, and welcomes visitors with open arms.</p>
+  <ul class="actions special">
+    <li><a href="{{ site.mapLinkUrl }}" class="button" target="_blank" rel="noopener">Get directions</a></li>
+  </ul>
+</article>
 
-<section class="section section--upcoming section--alt" aria-labelledby="upcoming-heading">
-  <div class="container">
+<section class="upcoming" aria-labelledby="upcoming-heading">
+  <header class="major">
     <h2 id="upcoming-heading">Coming Up</h2>
-    <div id="home-events" class="data-mount upcoming-events" data-limit="4" aria-live="polite"><p class="data-message data-message--loading">Loading events&hellip;</p></div>
-    <p class="text-center"><a class="link-more" href="/events/">All events</a></p>
-  </div>
+  </header>
+  <div id="home-events" class="data-mount upcoming-events" data-limit="4" aria-live="polite"><p class="data-message data-message--loading">Loading events&hellip;</p></div>
+  <ul class="actions special">
+    <li><a href="/events/" class="button">All events</a></li>
+  </ul>
 </section>
 
-<section class="banner" style="background-image: url('{{ "/assets/images/banner-gathering.jpg" | url }}')">
-  <div class="banner__inner container text-center">
+<section class="visit">
+  <header class="major">
     <h2>Come Visit Us</h2>
-    <p class="banner__lead">Whether you are a regular attendee or a newcomer, you will find a warm and inviting atmosphere at Pollok Baptist Church. Come as you are. You will be greeted at the door, and nobody will single you out as a visitor unless you want to be introduced.</p>
-    <p class="banner__actions">
-      <a class="button" href="/contact/">Plan your visit</a>
-      <a class="button button--ghost" href="/about/">More about us</a>
-    </p>
-    <p class="banner__contact">Call <a href="{{ site.phoneHref }}">{{ site.phone }}</a> or email <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
-  </div>
+  </header>
+  <div class="image main"><img src="/assets/images/banner-come-as-you-are.jpg" alt="A doormat that reads Come As You Are"></div>
+  <p>Whether you are a regular attendee or a newcomer, you will find a warm and inviting atmosphere at Pollok Baptist Church. Come as you are. You will be greeted at the door, and nobody will single you out as a visitor unless you want to be introduced.</p>
+  <ul class="actions special">
+    <li><a href="/contact/" class="button primary">Plan your visit</a></li>
+    <li><a href="/about/" class="button">More about us</a></li>
+  </ul>
+  <p class="text-center">Call <a href="{{ site.phoneHref }}">{{ site.phone }}</a> or email <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
 </section>

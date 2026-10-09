@@ -22,9 +22,12 @@ site had nothing real. Each item below maps to a spot in `src/_data/site.json` o
 
 ## Photos
 
-- [ ] Real photos of the building, sanctuary and congregation. The current `mission.jpg`,
-      `giving.jpg`, `community.jpg`, `worship.jpg` and the two `banner-*.jpg` files are
-      AI-generated stock from the old site. `hero-church.jpg` looks like the real building.
+- [x] Old site-builder AI images replaced (2026-10-09) with Unsplash photos and a blurred
+      church fellowship-meal photo. Sources are in `CREDITS.md`.
+- [ ] More real photos of the sanctuary and congregation, to replace the Unsplash ones
+      over time.
+- [ ] Photographer and link for the Unsplash Bible-study photo (`about-bible-study.jpg`).
+- [ ] Church to confirm the logo is its own (not made with the old builder's logo tool).
 
 ## Integrations (needed before go-live, not for local work)
 

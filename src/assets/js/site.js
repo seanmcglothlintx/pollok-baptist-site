@@ -1,5 +1,5 @@
-// Browser entry point. Wires the mobile nav and fills any events / announcements
-// mount points found on the page. All logic that can be unit tested lives in ./lib.
+// Browser entry point. Fills any events / announcements mount points found on the
+// page. The mobile nav panel comes from Massively's main.js. All logic that can be unit tested lives in ./lib.
 
 import { toEventViewModels, groupByDate } from "./lib/calendar-model.js";
 import { csvToObjects } from "./lib/sheet-csv.js";
@@ -19,18 +19,6 @@ function readConfig() {
     console.error("site-config is not valid JSON", err);
     return null;
   }
-}
-
-function setupNavToggle() {
-  const toggle = document.querySelector(".nav-toggle");
-  const nav = document.getElementById("site-nav");
-  if (toggle === null || nav === null) {
-    return;
-  }
-  toggle.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("is-open");
-    toggle.setAttribute("aria-expanded", String(isOpen));
-  });
 }
 
 async function fetchText(url) {
@@ -118,7 +106,6 @@ async function fillAnnouncements(config, mounts, noticeBar) {
 }
 
 function main() {
-  setupNavToggle();
   const config = readConfig();
   if (config === null) {
     return;
