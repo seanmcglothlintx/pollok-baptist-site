@@ -1,5 +1,28 @@
 import { describe, it, expect } from "vitest";
-import { announcementsCsvUrl, calendarEventsUrl } from "../src/assets/js/lib/data-urls.js";
+import { announcementsCsvUrl, calendarEventsUrl, withBase } from "../src/assets/js/lib/data-urls.js";
+
+describe("withBase", () => {
+  it("Given_RootBase_When_Applied_Then_PathUnchanged", () => {
+    expect(withBase("/assets/data/a.csv", "/")).toBe("/assets/data/a.csv");
+  });
+
+  it("Given_MissingBase_When_Applied_Then_PathUnchanged", () => {
+    expect(withBase("/announcements/", undefined)).toBe("/announcements/");
+  });
+
+  it("Given_SubfolderBase_When_Applied_Then_RootRelativePathIsPrefixed", () => {
+    expect(withBase("/assets/data/a.csv", "/pollok-baptist-site/")).toBe("/pollok-baptist-site/assets/data/a.csv");
+  });
+
+  it("Given_SubfolderBaseWithoutTrailingSlash_When_Applied_Then_NoDoubleOrMissingSlash", () => {
+    expect(withBase("/announcements/", "/pollok-baptist-site")).toBe("/pollok-baptist-site/announcements/");
+  });
+
+  it("Given_AbsoluteOrProtocolRelativeUrl_When_Applied_Then_LeftAlone", () => {
+    expect(withBase("https://docs.google.com/x", "/sub/")).toBe("https://docs.google.com/x");
+    expect(withBase("//cdn.example.com/x", "/sub/")).toBe("//cdn.example.com/x");
+  });
+});
 
 const PUB_ID = "2PACX-1vSt7Tnx1fpXbOo5XpTVmAWiLG_Hs8YdsUa2N8KLWAVts9T6_8qXn_tOPCDzs1knOozghsniWUgLHvO1";
 

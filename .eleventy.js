@@ -1,4 +1,10 @@
+import { HtmlBasePlugin } from "@11ty/eleventy";
+
 export default function (eleventyConfig) {
+  // Rewrites root-relative href/src URLs when built with --pathprefix (GitHub Pages
+  // serves the site from /pollok-baptist-site/). A plain build stays at "/".
+  eleventyConfig.addPlugin(HtmlBasePlugin);
+
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy({ "src/assets/images/logo-white.png": "favicon.png" });
 

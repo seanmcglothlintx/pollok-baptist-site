@@ -5,7 +5,7 @@ import { toEventViewModels, groupByDate } from "./lib/calendar-model.js";
 import { csvToObjects } from "./lib/sheet-csv.js";
 import { toAnnouncements } from "./lib/announcements-model.js";
 import { renderEventGroups, renderAnnouncements, renderMessage } from "./lib/render.js";
-import { announcementsCsvUrl, calendarEventsUrl } from "./lib/data-urls.js";
+import { announcementsCsvUrl, calendarEventsUrl, withBase } from "./lib/data-urls.js";
 import { createRotator } from "./lib/rotator.js";
 
 function readConfig() {
@@ -51,7 +51,7 @@ function limitOf(mount) {
 
 async function loadEvents(config) {
   const realNow = new Date();
-  const text = await fetchText(calendarEventsUrl(config.calendar, realNow));
+  const text = await fetchText(withBase(calendarEventsUrl(config.calendar, realNow), config.basePath));
   const payload = JSON.parse(text);
   // Fixtures carry an "asOf" so the sample data never goes stale.
   let now = realNow;
@@ -63,7 +63,7 @@ async function loadEvents(config) {
 }
 
 async function loadAnnouncements(config) {
-  const text = await fetchText(announcementsCsvUrl(config.announcements));
+  const text = await fetchText(withBase(announcementsCsvUrl(config.announcements), config.basePath));
   const rows = csvToObjects(text);
   return toAnnouncements(rows, { now: new Date(), timeZone: config.timeZone });
 }
@@ -104,6 +104,7 @@ async function fillAnnouncements(config, mounts, noticeBar) {
     if (noticeBar !== null) {
       createRotator(noticeBar, items, {
         limit: limitOf(noticeBar),
+        moreHref: withBase("/announcements/", config.basePath),
         reducedMotion: prefersReducedMotion(),
       });
     }

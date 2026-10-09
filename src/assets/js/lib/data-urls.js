@@ -1,6 +1,16 @@
 // Builds the URLs the browser fetches for each data feed. Each feed has its own
 // `source`: "fixture" reads a local sample file, "live" reads Google.
 
+// Prefixes a root-relative path with the site's base path, so the site still works
+// when hosted under a subfolder (GitHub Pages project sites). Absolute and
+// protocol-relative URLs pass through untouched.
+export function withBase(path, basePath) {
+  if (!basePath || basePath === "/" || !path.startsWith("/") || path.startsWith("//")) {
+    return path;
+  }
+  return basePath.replace(/\/+$/, "") + path;
+}
+
 function require(value, name, feed) {
   if (!value) {
     throw new Error(`${feed}.${name} is required when ${feed}.source is "live"`);

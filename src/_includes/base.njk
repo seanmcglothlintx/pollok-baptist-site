@@ -8,12 +8,13 @@
   <meta property="og:title" content="{{ title }} - {{ site.name }}">
   <meta property="og:description" content="{{ description }}">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="/assets/images/hero-church.jpg">
+  <meta property="og:image" content="{{ '/assets/images/hero-church.jpg' | url }}">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="stylesheet" href="/assets/fonts/play-regular.css">
   <link rel="stylesheet" href="/assets/fonts/open-sans.css">
   <link rel="stylesheet" href="/assets/css/site.css">
   <script type="application/json" id="site-config">{{ {
+    basePath: "/" | url,
     timeZone: site.timeZone,
     calendar: site.calendar,
     announcements: site.announcements

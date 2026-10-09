@@ -1,9 +1,55 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import Eleventy from "@11ty/eleventy";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const EXPECTED_PAGES = ["/", "/about/", "/events/", "/announcements/", "/contact/", "/give/", "/404.html"];
 const NAV_LABELS = ["Home", "About", "Events", "Announcements", "Contact", "Give"];
 const PLACEHOLDERS = ["$address$", "$phone$", "$email$", "Click to edit", "twitterforreplacement", "Link caption"];
+
+function siteConfigOf(html) {
+  const match = html.match(/<script type="application\/json" id="site-config">([\s\S]*?)<\/script>/);
+  return JSON.parse(match[1]);
+}
+
+// Every root-relative URL in an href/src/content attribute or a CSS url(...),
+// skipping protocol-relative "//host" URLs.
+function rootRelativeUrls(html) {
+  const found = [];
+  const patterns = [/\s(?:href|src|content)="(\/(?!\/)[^"]*)"/g, /url\(['"]?(\/(?!\/)[^'")]*)/g];
+  for (const pattern of patterns) {
+    for (const m of html.matchAll(pattern)) {
+      found.push(m[1]);
+    }
+  }
+  return found;
+}
+
+describe("site build under a GitHub Pages subfolder", () => {
+  const PREFIX = "/pollok-baptist-site/";
+  let prefixed;
+  // Uses the CLI flag, exactly as the GitHub Pages workflow does; the programmatic
+  // constructor ignores a pathPrefix option.
+  beforeAll(() => {
+    const cli = fileURLToPath(new URL("../node_modules/@11ty/eleventy/cmd.cjs", import.meta.url));
+    const json = execFileSync(process.execPath, [cli, `--pathprefix=${PREFIX}`, "--to=json", "--quiet"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    prefixed = new Map(JSON.parse(json).map((r) => [r.url, r.content]));
+  }, 60000);
+
+  it("Given_PathPrefix_When_Built_Then_EveryRootRelativeUrlCarriesThePrefix", () => {
+    for (const url of EXPECTED_PAGES) {
+      const urls = rootRelativeUrls(prefixed.get(url));
+      expect(urls.length, `${url} has no root-relative urls to check`).toBeGreaterThan(0);
+      for (const u of urls) {
+        expect(u.startsWith(PREFIX), `${url} has unprefixed ${u}`).toBe(true);
+      }
+    }
+  });
+
+  it("Given_PathPrefix_When_Built_Then_SiteConfigCarriesBasePathForScripts", () => {
+    expect(siteConfigOf(prefixed.get("/")).basePath).toBe(PREFIX);
+  });
+});
 
 let pages;
 beforeAll(async () => {
@@ -98,6 +144,10 @@ describe("site build", () => {
 
   it("Given_GivePage_When_Built_Then_WaysToGiveUsesCenteredNarrowLayout", () => {
     expect(pages.get("/give/")).toContain("two-col--centered");
+  });
+
+  it("Given_DefaultBuild_When_Built_Then_SiteConfigBasePathIsRoot", () => {
+    expect(siteConfigOf(pages.get("/")).basePath).toBe("/");
   });
 
   it("Given_EveryPage_When_Built_Then_HasTitleAndMetaDescription", () => {

@@ -11,7 +11,7 @@
     {% include "hero.njk" %}
 #}
 {% if hero.image %}
-<section class="hero hero--{{ hero.size or 'short' }}" style="background-image: url('{{ hero.image }}')">
+<section class="hero hero--{{ hero.size or 'short' }}" style="background-image: url('{{ hero.image | url }}')">
 {% else %}
 <section class="hero hero--{{ hero.size or 'short' }} hero--plain">
 {% endif %}
