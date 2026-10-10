@@ -116,7 +116,9 @@ describe("site build", () => {
     expect(html).not.toContain('id="notice-bar"');
     expect(html).not.toContain('class="notice"');
     expect(html.indexOf('id="home-events"')).toBeGreaterThan(html.indexOf("Coming Up"));
-    expect(html).toMatch(/id="home-events"[^>]*data-limit="4"/);
+    // Rotates through every upcoming event, so no cap on the mount.
+    expect(html).toContain('id="home-events"');
+    expect(html).not.toMatch(/id="home-events"[^>]*data-limit=/);
     expect(html).toMatch(/id="home-events"[^>]*class="[^"]*notice-bar[^"]*event-rotator/);
     expect(html).not.toContain("upcoming-events");
     expect(html).not.toContain('id="home-announcements"');
@@ -158,10 +160,11 @@ describe("site build", () => {
     }
   });
 
-  it("Given_AnnouncementsPage_When_Built_Then_TextOnlyHeaderWithIntroLine", () => {
+  it("Given_AnnouncementsPage_When_Built_Then_TextOnlyHeaderWithoutIntroLine", () => {
     const html = pages.get("/announcements/");
     expect(html).not.toContain('class="image main"');
-    expect(html).toContain("church office");
+    expect(html).not.toContain("church office");
+    expect(html).not.toContain("page-intro");
   });
 
 

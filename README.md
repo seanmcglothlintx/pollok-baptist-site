@@ -50,10 +50,11 @@ Each feed has its own `source` in `site.json`: `"fixture"` reads the sample file
 
 ## Home page "Coming Up" rotator
 
-"Coming Up" shows the next four events one at a time (date and time, title, location). It
+"Coming Up" rotates through every upcoming event, one at a time (date and time, title,
+location); events drop off once they have ended. It
 advances every 8 seconds, pauses on hover, keyboard focus and hidden tabs, never
 auto-advances for visitors with reduced motion enabled, and has previous/next buttons plus
-dots. Change the count with `data-limit` on `#home-events` in `src/index.njk`, the slide
+dots. To cap how many it shows, add `data-limit="N"` to `#home-events` in `src/index.njk`. Change the slide
 content and labels in `startEventRotator` in `src/assets/js/site.js`, and the interval via
 `intervalMs` in `src/assets/js/lib/rotator.js`.
 

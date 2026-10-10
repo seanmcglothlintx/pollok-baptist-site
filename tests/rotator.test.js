@@ -218,3 +218,12 @@ describe("createRotator for events", () => {
     expect(container.querySelector(".notice-bar__more").textContent).toBe("Read more");
   });
 });
+
+describe("createRotator with no limit", () => {
+  it("Given_LimitInfinity_When_Created_Then_EveryItemGetsADot", () => {
+    rotator = createRotator(container, items(12), { intervalMs: 1000, limit: Infinity });
+    expect(container.querySelectorAll(".notice-bar__dot").length).toBe(12);
+    rotator.goTo(11);
+    expect(shownTitle()).toBe("Notice 12");
+  });
+});
