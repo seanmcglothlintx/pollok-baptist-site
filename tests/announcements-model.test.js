@@ -67,3 +67,78 @@ describe("toAnnouncements", () => {
     expect(a.dateLabel).toBe("");
   });
 });
+
+describe("toAnnouncements Order column", () => {
+  function titles(rows) {
+    return toAnnouncements(rows, { now: NOW, timeZone: TZ }).map((a) => a.title);
+  }
+
+  it("Given_OrderOnUnpinnedRows_When_Mapped_Then_SortedByOrderNotDate", () => {
+    const rows = [
+      row({ Title: "Newest but third", Date: "2026-09-30", Order: "3" }),
+      row({ Title: "Oldest but first", Date: "2026-08-01", Order: "1" }),
+      row({ Title: "Second", Date: "2026-09-15", Order: "2" }),
+    ];
+    expect(titles(rows)).toEqual(["Oldest but first", "Second", "Newest but third"]);
+  });
+
+  it("Given_UnpinnedRowWithLowerOrder_When_Mapped_Then_PinnedStillFirst", () => {
+    const rows = [
+      row({ Title: "Unpinned order 1", Order: "1" }),
+      row({ Title: "Pinned order 9", Pinned: "yes", Order: "9" }),
+    ];
+    expect(titles(rows)).toEqual(["Pinned order 9", "Unpinned order 1"]);
+  });
+
+  it("Given_SeveralPinnedRows_When_Mapped_Then_OrderDecidesAmongPinned", () => {
+    const rows = [
+      row({ Title: "Pinned B", Pinned: "yes", Order: "2", Date: "2026-09-30" }),
+      row({ Title: "Unpinned", Order: "1" }),
+      row({ Title: "Pinned A", Pinned: "yes", Order: "1", Date: "2026-08-01" }),
+    ];
+    expect(titles(rows)).toEqual(["Pinned A", "Pinned B", "Unpinned"]);
+  });
+
+  it("Given_BlankOrder_When_Mapped_Then_AfterNumberedRowsNewestFirst", () => {
+    const rows = [
+      row({ Title: "Blank older", Date: "2026-09-01", Order: "" }),
+      row({ Title: "Numbered", Date: "2026-08-01", Order: "5" }),
+      row({ Title: "Blank newer", Date: "2026-09-20" }),
+    ];
+    expect(titles(rows)).toEqual(["Numbered", "Blank newer", "Blank older"]);
+  });
+
+  it("Given_NonNumericOrder_When_Mapped_Then_TreatedAsBlank", () => {
+    const rows = [
+      row({ Title: "Text order", Date: "2026-09-30", Order: "first" }),
+      row({ Title: "Numbered", Date: "2026-08-01", Order: " 2 " }),
+    ];
+    expect(titles(rows)).toEqual(["Numbered", "Text order"]);
+  });
+
+  it("Given_SameOrder_When_Mapped_Then_NewestDateFirst", () => {
+    const rows = [
+      row({ Title: "Older", Date: "2026-09-01", Order: "1" }),
+      row({ Title: "Newer", Date: "2026-09-20", Order: "1" }),
+    ];
+    expect(titles(rows)).toEqual(["Newer", "Older"]);
+  });
+
+  it("Given_TheChurchSheetAsOfOctober9_When_Mapped_Then_FollowsItsOrderColumn", () => {
+    const rows = [
+      row({ Title: "Fall Revival November 20-22", Date: "9/28/2026", ExpiresOn: "11/23/2026", Pinned: "yes", Order: "1" }),
+      row({ Title: "Church Picnic October 10", Date: "9/25/2026", ExpiresOn: "10/11/2026", Order: "2" }),
+      row({ Title: "Wednesday Bible Study resumes", Date: "9/20/2026", Order: "3" }),
+      row({ Title: "Online giving is available", Date: "9/1/2026", Order: "4" }),
+      row({ Title: "This one is expired and should not show", Date: "8/1/2026", ExpiresOn: "9/1/2026", Order: "5" }),
+      row({ Title: "New Website", Date: "10/8/2026", ExpiresOn: "10/11/2026", Order: "6" }),
+    ];
+    expect(titles(rows)).toEqual([
+      "Fall Revival November 20-22",
+      "Church Picnic October 10",
+      "Wednesday Bible Study resumes",
+      "Online giving is available",
+      "New Website",
+    ]);
+  });
+});

@@ -1,5 +1,7 @@
 // Turns rows from the announcements sheet into sorted, filtered view models.
-// Expected columns: Title, Date, Body, ExpiresOn, Pinned.
+// Expected columns: Title, Date, Body, ExpiresOn, Pinned, Order.
+// Sort: pinned rows first; within pinned and within unpinned, by Order (lowest first);
+// rows with no usable Order follow, newest Date first. Equal Orders also go newest first.
 
 import { formatLongDate, dateKeyToNoonUtc, zonedMidnight, addDaysToKey } from "./format-date.js";
 
@@ -37,13 +39,33 @@ function isExpired(expiresKey, now, timeZone) {
   return now.getTime() >= hiddenFrom.getTime();
 }
 
-function compareAnnouncements(a, b) {
-  if (a.pinned !== b.pinned) {
-    if (a.pinned) {
-      return -1;
-    }
+// Returns the Order cell as a number, or null when blank or not a number.
+function parseOrder(text) {
+  const value = (text || "").trim();
+  if (value === "") {
+    return null;
+  }
+  const number = Number(value);
+  if (!Number.isFinite(number)) {
+    return null;
+  }
+  return number;
+}
+
+function compareOrder(a, b) {
+  if (a.order === b.order) {
+    return 0;
+  }
+  if (a.order === null) {
     return 1;
   }
+  if (b.order === null) {
+    return -1;
+  }
+  return a.order - b.order;
+}
+
+function compareNewestFirst(a, b) {
   if (a.dateKey === b.dateKey) {
     return 0;
   }
@@ -57,6 +79,20 @@ function compareAnnouncements(a, b) {
     return -1;
   }
   return 1;
+}
+
+function compareAnnouncements(a, b) {
+  if (a.pinned !== b.pinned) {
+    if (a.pinned) {
+      return -1;
+    }
+    return 1;
+  }
+  const byOrder = compareOrder(a, b);
+  if (byOrder !== 0) {
+    return byOrder;
+  }
+  return compareNewestFirst(a, b);
 }
 
 export function toAnnouncements(rows, { now = new Date(), timeZone = "America/Chicago" } = {}) {
@@ -81,6 +117,7 @@ export function toAnnouncements(rows, { now = new Date(), timeZone = "America/Ch
       dateKey,
       dateLabel,
       pinned: PINNED_VALUES.test((row.Pinned || "").trim()),
+      order: parseOrder(row.Order),
     });
   }
   result.sort(compareAnnouncements);

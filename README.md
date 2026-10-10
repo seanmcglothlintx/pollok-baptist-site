@@ -62,9 +62,15 @@ Announcements page only.
 
 ## Announcements sheet format
 
-| Title | Date | Body | ExpiresOn | Pinned |
-|---|---|---|---|---|
-| Fall Revival | 2026-09-28 | Guest speaker each evening… | 2026-11-23 | yes |
+| Title | Date | Body | ExpiresOn | Pinned | Order |
+|---|---|---|---|---|---|
+| Fall Revival | 2026-09-28 | Guest speaker each evening… | 2026-11-23 | yes | 1 |
 
 Dates accept `2026-09-28` or `9/28/2026`. Rows disappear the day after `ExpiresOn`.
-Pinned rows (`yes`, `y`, `true`, `1`, `x`) sort to the top. Line breaks in Body become paragraphs.
+Line breaks in Body become paragraphs.
+
+Sort order on the Announcements page:
+1. Pinned rows (`yes`, `y`, `true`, `1`, `x`) always come first.
+2. Within the pinned rows, and within the rest, `Order` decides (lowest number first).
+3. Rows with a blank or non-number `Order` follow, newest `Date` first. Equal `Order`
+   numbers also go newest first.
