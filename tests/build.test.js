@@ -211,6 +211,17 @@ describe("site build", () => {
     }
   });
 
+  it("Given_EveryPage_When_Built_Then_FooterIsOneCompactRow", () => {
+    for (const url of EXPECTED_PAGES) {
+      const html = pages.get(url);
+      const footer = html.slice(html.indexOf('id="footer"'), html.indexOf('id="copyright"'));
+      expect(footer.match(/<section/g)?.length, url).toBe(1);
+      expect(footer, url).toContain('class="footer-row"');
+      expect(footer, url).not.toContain("split contact");
+      expect(footer.match(/class="footer-row__item"/g)?.length, url).toBe(5);
+    }
+  });
+
   it("Given_HomePage_When_Built_Then_OnlyItHasTheIntro", () => {
     for (const url of EXPECTED_PAGES) {
       expect(pages.get(url).includes('id="intro"'), url).toBe(url === "/");

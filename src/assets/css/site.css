@@ -407,11 +407,39 @@
   text-align: left;
 }
 
+/* ---------- Footer: one compact row instead of Massively's two tall columns ---------- */
+
+#footer > section.footer-row {
+  width: 100%;
+  padding: 2.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 1.1fr 0.8fr 1.5fr;
+  gap: 2rem;
+  border-left: 0;
+}
+
+.footer-row__item h3 {
+  font-size: 0.7rem;
+  margin-bottom: 0.6rem;
+}
+
+.footer-row__item p {
+  font-size: 0.8rem;
+  line-height: 1.7;
+  margin: 0;
+  text-align: left;
+}
+
 /* ---------- Responsive ---------- */
 
 @media screen and (max-width: 980px) {
   .contact-cards {
     grid-template-columns: 1fr;
+  }
+
+  #footer > section.footer-row {
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem;
   }
 }
 
@@ -434,6 +462,11 @@
 
   #intro .actions .scrolly {
     display: none;
+  }
+
+  /* The email address is too long for half a phone screen. */
+  #footer > section.footer-row .footer-row__item:nth-child(5) {
+    grid-column: 1 / -1;
   }
 
   .notice-bar__item {

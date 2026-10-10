@@ -82,33 +82,27 @@
     </div>
 
     <footer id="footer">
-      <section>
-        <h3>Visit us</h3>
-        <p>
-          {% for s in site.serviceTimes %}<strong>{{ s.label }}</strong> &middot; {{ s.time }}<br>{% endfor %}
-          {{ site.location }}
-        </p>
-        <ul class="actions">
-          <li><a href="{{ site.mapLinkUrl }}" class="button" target="_blank" rel="noopener">Get directions</a></li>
-        </ul>
-      </section>
-      <section class="split contact">
-        <section class="alt">
+      <section class="footer-row">
+        <div class="footer-row__item">
+          <h3>Worship</h3>
+          <p>{% for s in site.serviceTimes %}{{ s.label }}<br>{{ s.time }}{% if not loop.last %}<br>{% endif %}{% endfor %}</p>
+        </div>
+        <div class="footer-row__item">
+          <h3>Location</h3>
+          <p>{{ site.location }}<br><a href="{{ site.mapLinkUrl }}" target="_blank" rel="noopener">Get directions</a></p>
+        </div>
+        <div class="footer-row__item">
           <h3>Mailing address</h3>
           <p>{{ site.mailingAddress.line1 }}<br>{{ site.mailingAddress.city }}, {{ site.mailingAddress.state }} {{ site.mailingAddress.zip }}</p>
-        </section>
-        <section>
-          <h3>Phone</h3>
-          <p><a href="{{ site.phoneHref }}">{{ site.phone }}</a></p>
-        </section>
-        <section>
-          <h3>Email</h3>
-          <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
-        </section>
-        <section>
+        </div>
+        <div class="footer-row__item">
           <h3>Give</h3>
-          <p><a href="/give/">Giving platforms compared</a></p>
-        </section>
+          <p><a href="/give/">Ways to give</a></p>
+        </div>
+        <div class="footer-row__item">
+          <h3>Contact</h3>
+          <p><a href="{{ site.phoneHref }}">{{ site.phone }}</a><br><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+        </div>
       </section>
     </footer>
 
