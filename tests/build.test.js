@@ -111,11 +111,11 @@ describe("site build", () => {
     expect(pages.get("/announcements/")).toContain('type="module"');
   });
 
-  it("Given_HomePage_When_Built_Then_HasNoticeBarAtTopOfMainAndEventsOnlyComingUp", () => {
+  it("Given_HomePage_When_Built_Then_OnlyRotatorIsTheComingUpEvents", () => {
     const html = pages.get("/");
-    expect(html).toContain('id="notice-bar"');
-    expect(html.indexOf('id="notice-bar"')).toBeLessThan(html.indexOf("Coming Up"));
-    expect(html.indexOf('id="notice-bar"')).toBeGreaterThan(html.indexOf('id="main"'));
+    expect(html).not.toContain('id="notice-bar"');
+    expect(html).not.toContain('class="notice"');
+    expect(html.indexOf('id="home-events"')).toBeGreaterThan(html.indexOf("Coming Up"));
     expect(html).toMatch(/id="home-events"[^>]*data-limit="4"/);
     expect(html).toMatch(/id="home-events"[^>]*class="[^"]*notice-bar[^"]*event-rotator/);
     expect(html).not.toContain("upcoming-events");

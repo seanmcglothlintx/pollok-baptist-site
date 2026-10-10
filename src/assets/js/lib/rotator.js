@@ -1,5 +1,5 @@
-// Text-only rotator for the home page: the announcements notice bar and the
-// "Coming Up" events. Shows one item at a time, auto-advances on a timer, pauses on
+// Text-only rotator, used for "Coming Up" events on the home page (it began as the
+// announcements notice bar, hence the notice-bar__* classes and announcement defaults). Shows one item at a time, auto-advances on a timer, pauses on
 // hover or keyboard focus, never auto-advances under reduced motion, and always offers
 // previous/next buttons plus one dot per item so people can move at their own pace.
 // `describe(item)` maps an item to { meta, title, body, pinned }; the default reads an

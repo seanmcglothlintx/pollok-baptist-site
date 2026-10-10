@@ -63,7 +63,7 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-// "Coming Up" on the home page: one event at a time, like the notice bar.
+// "Coming Up" on the home page: one event at a time.
 function startEventRotator(config, mount, groups) {
   const events = groups.flatMap((group) => group.events);
   if (events.length === 0) {
@@ -105,28 +105,16 @@ async function fillEvents(config, list, rotator) {
   }
 }
 
-async function fillAnnouncements(config, mounts, noticeBar) {
-  if (mounts.length === 0 && noticeBar === null) {
+async function fillAnnouncements(config, mount) {
+  if (mount === null) {
     return;
   }
   try {
     const items = await loadAnnouncements(config);
-    for (const mount of mounts) {
-      renderAnnouncements(mount, items, { limit: limitOf(mount) });
-    }
-    if (noticeBar !== null) {
-      createRotator(noticeBar, items, {
-        limit: limitOf(noticeBar),
-        moreHref: withBase("/announcements/", config.basePath),
-        reducedMotion: prefersReducedMotion(),
-      });
-    }
+    renderAnnouncements(mount, items, { limit: limitOf(mount) });
   } catch (err) {
     console.error("announcements failed to load", err);
-    for (const mount of mounts) {
-      renderMessage(mount, "We could not load announcements right now. Please try again later.", "error");
-    }
-    // The notice bar simply stays hidden when the feed is unavailable.
+    renderMessage(mount, "We could not load announcements right now. Please try again later.", "error");
   }
 }
 
@@ -135,10 +123,8 @@ function main() {
   if (config === null) {
     return;
   }
-  const announcementMounts = ["announcements-list"].map((id) => document.getElementById(id)).filter(Boolean);
-  const noticeBar = document.getElementById("notice-bar");
   fillEvents(config, document.getElementById("events-list"), document.getElementById("home-events"));
-  fillAnnouncements(config, announcementMounts, noticeBar);
+  fillAnnouncements(config, document.getElementById("announcements-list"));
 }
 
 main();

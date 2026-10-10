@@ -22,7 +22,7 @@ npm run build      # writes the site to _site/
 | `src/_includes/post-header.njk` | Opens an inner page as a Massively "post" (title, tagline, photo) |
 | `src/*.njk` | One file per page |
 | `src/assets/css/main.css`, `noscript.css`, `fontawesome-all.min.css` | Massively by HTML5 UP, unmodified apart from image paths in `noscript.css` |
-| `src/assets/css/site.css` | Church overrides and components Massively lacks (notice bar, events, announcements, contact cards) |
+| `src/assets/css/site.css` | Church overrides and components Massively lacks (event rotator, events, announcements, contact cards) |
 | `src/assets/js/massively/` | Massively scripts (jQuery, Scrollex, nav panel, parallax background) |
 | `src/assets/js/site.js` | Browser entry: loads events and announcements |
 | `src/assets/js/lib/` | Modules under test: date formatting, calendar model, CSV, announcements, feed URLs, DOM render, notice-bar rotator |
@@ -48,17 +48,17 @@ Each feed has its own `source` in `site.json`: `"fixture"` reads the sample file
 - **Calendar** is still on the fixture. Fill in `calendar.calendarId` and `calendar.apiKey`
   and set `calendar.source` to `"live"`. See `CONTENT-NEEDED.md`.
 
-## Home page notice bar
+## Home page "Coming Up" rotator
 
-The home page shows the top five announcements (pinned first, then newest) one at a time in a
-bar at the top of the main panel, just under the intro. It advances every 8 seconds, pauses on hover, keyboard focus and hidden
-tabs, never auto-advances for visitors with reduced motion enabled, and has previous/next
-buttons plus dots. Change the count with `data-limit` on `#notice-bar` in `src/index.njk`
-and the interval via `intervalMs` in `src/assets/js/lib/rotator.js`.
+"Coming Up" shows the next four events one at a time (date and time, title, location). It
+advances every 8 seconds, pauses on hover, keyboard focus and hidden tabs, never
+auto-advances for visitors with reduced motion enabled, and has previous/next buttons plus
+dots. Change the count with `data-limit` on `#home-events` in `src/index.njk`, the slide
+content and labels in `startEventRotator` in `src/assets/js/site.js`, and the interval via
+`intervalMs` in `src/assets/js/lib/rotator.js`.
 
-"Coming Up" on the home page uses the same rotator for events (`#home-events`, four
-events, date and time, title and location). Its options are in `startEventRotator` in
-`src/assets/js/site.js`; `describe(item)` decides what each slide shows.
+Announcements are no longer rotated on the home page (removed 2026-10-09); they live on the
+Announcements page only.
 
 ## Announcements sheet format
 

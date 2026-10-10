@@ -1,6 +1,6 @@
 /* Pollok Baptist Church - site styles, loaded after Massively's main.css.
    Holds the church-specific overrides and the components Massively doesn't have
-   (notice bar, events, announcements, contact cards). Colours follow Massively. */
+   (event rotator, events, announcements, contact cards). Colours follow Massively. */
 
 :root {
   --ink: #212931;
@@ -102,16 +102,7 @@
   font-style: italic;
 }
 
-/* ---------- Notice bar: rotating announcements at the top of the home page ---------- */
-
-#main > .notice {
-  padding: 1.5rem 2rem 1rem;
-  background: var(--panel);
-}
-
-#main > .notice:has(.notice-bar[hidden]) {
-  display: none;
-}
+/* ---------- Rotator (notice-bar__* classes): "Coming Up" events on the home page ---------- */
 
 .notice-bar__row {
   display: flex;
@@ -448,10 +439,6 @@
 
   #intro .actions .scrolly {
     display: none;
-  }
-
-  #main > .notice {
-    padding: 1rem;
   }
 
   .notice-bar__item {
