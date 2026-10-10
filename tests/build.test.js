@@ -1,4 +1,7 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import Eleventy from "@11ty/eleventy";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -175,7 +178,7 @@ describe("site build", () => {
         expect(html, `${url} lacks #${id}`).toContain(`id="${id}"`);
       }
       expect(html, url).toContain('href="/assets/css/main.css"');
-      expect(html.indexOf('href="/assets/css/main.css"'), url).toBeLessThan(html.indexOf('href="/assets/css/site.css"'));
+      expect(html.indexOf('href="/assets/css/main.css"'), url).toBeLessThan(html.indexOf('href="/assets/css/site.css'));
       expect(html, url).toContain('src="/assets/js/massively/main.js"');
     }
   });
@@ -208,6 +211,16 @@ describe("site build", () => {
       expect(footer, url).toContain("(936) 287-1033");
       expect(footer, url).toContain("emily@pollokbaptist.org");
       expect(footer, url).toContain("PO Box 85");
+    }
+  });
+
+  it("Given_EveryPage_When_Built_Then_OurCssAndJsLinksCarryABuildVersion", () => {
+    // Pages lets browsers cache files for 10 minutes; a per-build ?v= makes each
+    // publish fetch fresh site.css / site.js instead of mixing new HTML with old CSS.
+    for (const url of EXPECTED_PAGES) {
+      const html = pages.get(url);
+      expect(html, url).toMatch(/href="\/assets\/css\/site\.css\?v=[a-z0-9]+"/);
+      expect(html, url).toMatch(/src="\/assets\/js\/site\.js\?v=[a-z0-9]+"/);
     }
   });
 
@@ -263,3 +276,40 @@ describe("site build", () => {
     }
   });
 });
+
+describe("built JavaScript files", () => {
+  // A real build to a temp folder: the versioning of module imports happens after
+  // Eleventy writes files, so toJSON() cannot see it.
+  let out;
+  let version;
+  beforeAll(() => {
+    out = mkdtempSync(join(tmpdir(), "pbc-build-"));
+    const cli = fileURLToPath(new URL("../node_modules/@11ty/eleventy/cmd.cjs", import.meta.url));
+    execFileSync(process.execPath, [cli, `--output=${out}`, "--quiet"], { encoding: "utf8" });
+    version = readFileSync(join(out, "index.html"), "utf8").match(/site\.js\?v=([a-z0-9]+)/)[1];
+  }, 60000);
+
+  afterAll(() => {
+    rmSync(out, { recursive: true, force: true });
+  });
+
+  it("Given_ABuild_When_SiteJsWritten_Then_EveryLocalImportCarriesTheSameVersion", () => {
+    const js = readFileSync(join(out, "assets", "js", "site.js"), "utf8");
+    const imports = [...js.matchAll(/from "(\.[^"]+)"/g)].map((m) => m[1]);
+    expect(imports.length).toBeGreaterThan(0);
+    for (const spec of imports) {
+      expect(spec.endsWith(`.js?v=${version}`), spec).toBe(true);
+    }
+  });
+
+  it("Given_ABuild_When_LibModulesWritten_Then_TheirLocalImportsAreVersionedToo", () => {
+    const js = readFileSync(join(out, "assets", "js", "lib", "announcements-model.js"), "utf8");
+    expect(js).toContain(`from "./format-date.js?v=${version}"`);
+  });
+
+  it("Given_ABuild_When_SourceFilesChecked_Then_SourceImportsAreLeftUnversioned", () => {
+    const src = readFileSync(fileURLToPath(new URL("../src/assets/js/site.js", import.meta.url)), "utf8");
+    expect(src).not.toContain("?v=");
+  });
+});
+
