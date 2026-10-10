@@ -56,28 +56,53 @@ async function loadAnnouncements(config) {
   return toAnnouncements(rows, { now: new Date(), timeZone: config.timeZone });
 }
 
-async function fillEvents(config, mounts) {
-  if (mounts.length === 0) {
-    return;
-  }
-  try {
-    const groups = await loadEvents(config);
-    for (const mount of mounts) {
-      renderEventGroups(mount, groups, { limit: limitOf(mount) });
-    }
-  } catch (err) {
-    console.error("events failed to load", err);
-    for (const mount of mounts) {
-      renderMessage(mount, "We could not load the events calendar right now. Please try again later.", "error");
-    }
-  }
-}
-
 function prefersReducedMotion() {
   if (typeof window.matchMedia !== "function") {
     return false;
   }
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+// "Coming Up" on the home page: one event at a time, like the notice bar.
+function startEventRotator(config, mount, groups) {
+  const events = groups.flatMap((group) => group.events);
+  if (events.length === 0) {
+    renderMessage(mount, "No upcoming events are scheduled right now. Check back soon.", "empty");
+    return;
+  }
+  createRotator(mount, events, {
+    limit: limitOf(mount),
+    label: "Upcoming events",
+    itemName: "event",
+    moreHref: withBase("/events/", config.basePath),
+    moreLabel: "All events",
+    reducedMotion: prefersReducedMotion(),
+    describe: (event) => ({
+      meta: `${event.dateLabel} · ${event.timeLabel}`,
+      title: event.title,
+      body: event.location,
+    }),
+  });
+}
+
+async function fillEvents(config, list, rotator) {
+  if (list === null && rotator === null) {
+    return;
+  }
+  try {
+    const groups = await loadEvents(config);
+    if (list !== null) {
+      renderEventGroups(list, groups, { limit: limitOf(list) });
+    }
+    if (rotator !== null) {
+      startEventRotator(config, rotator, groups);
+    }
+  } catch (err) {
+    console.error("events failed to load", err);
+    for (const mount of [list, rotator].filter(Boolean)) {
+      renderMessage(mount, "We could not load the events calendar right now. Please try again later.", "error");
+    }
+  }
 }
 
 async function fillAnnouncements(config, mounts, noticeBar) {
@@ -110,10 +135,9 @@ function main() {
   if (config === null) {
     return;
   }
-  const eventMounts = ["events-list", "home-events"].map((id) => document.getElementById(id)).filter(Boolean);
   const announcementMounts = ["announcements-list"].map((id) => document.getElementById(id)).filter(Boolean);
   const noticeBar = document.getElementById("notice-bar");
-  fillEvents(config, eventMounts);
+  fillEvents(config, document.getElementById("events-list"), document.getElementById("home-events"));
   fillAnnouncements(config, announcementMounts, noticeBar);
 }
 

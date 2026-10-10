@@ -159,3 +159,62 @@ describe("createRotator", () => {
     expect(container.getAttribute("aria-roledescription")).toBe("carousel");
   });
 });
+
+describe("createRotator for events", () => {
+  function events(n) {
+    return Array.from({ length: n }, (_, i) => ({
+      title: `Event ${i + 1}`,
+      location: `Room ${i + 1}`,
+      dateLabel: `Sunday, October ${i + 4}, 2026`,
+      timeLabel: "10:45 AM – 12:00 PM",
+      description: "Long description\nthat should not appear",
+    }));
+  }
+
+  const eventOptions = {
+    intervalMs: 1000,
+    label: "Upcoming events",
+    itemName: "event",
+    moreHref: "/events/",
+    moreLabel: "All events",
+    describe: (e) => ({ meta: `${e.dateLabel} · ${e.timeLabel}`, title: e.title, body: e.location }),
+  };
+
+  it("Given_DescribeOption_When_Rendered_Then_ShowsDateTimeTitleAndLocation", () => {
+    rotator = createRotator(container, events(3), eventOptions);
+    expect(container.querySelector(".notice-bar__meta").textContent).toBe("Sunday, October 4, 2026 · 10:45 AM – 12:00 PM");
+    expect(shownTitle()).toBe("Event 1");
+    expect(container.querySelector(".notice-bar__body").textContent).toBe("Room 1");
+    expect(container.textContent).not.toContain("Long description");
+  });
+
+  it("Given_EventLabels_When_Rendered_Then_ControlsAndRegionNameEvents", () => {
+    rotator = createRotator(container, events(3), eventOptions);
+    expect(container.getAttribute("aria-label")).toBe("Upcoming events");
+    expect(container.querySelector(".notice-bar__prev").getAttribute("aria-label")).toBe("Previous event");
+    expect(container.querySelector(".notice-bar__next").getAttribute("aria-label")).toBe("Next event");
+    expect(container.querySelector(".notice-bar__dot").getAttribute("aria-label")).toBe("Event 1 of 3");
+    const more = container.querySelector(".notice-bar__more");
+    expect(more.textContent).toBe("All events");
+    expect(more.getAttribute("href")).toBe("/events/");
+  });
+
+  it("Given_EventRotator_When_IntervalElapses_Then_AdvancesAndUpdatesMeta", () => {
+    rotator = createRotator(container, events(3), eventOptions);
+    vi.advanceTimersByTime(1000);
+    expect(shownTitle()).toBe("Event 2");
+    expect(container.querySelector(".notice-bar__meta").textContent).toContain("October 5");
+  });
+
+  it("Given_NoMeta_When_Rendered_Then_MetaElementHidden", () => {
+    rotator = createRotator(container, items(2), { intervalMs: 1000 });
+    expect(container.querySelector(".notice-bar__meta").hidden).toBe(true);
+  });
+
+  it("Given_DefaultOptions_When_Rendered_Then_StillLabelledAsAnnouncements", () => {
+    rotator = createRotator(container, items(2), { intervalMs: 1000 });
+    expect(container.getAttribute("aria-label")).toBe("Announcements");
+    expect(container.querySelector(".notice-bar__next").getAttribute("aria-label")).toBe("Next announcement");
+    expect(container.querySelector(".notice-bar__more").textContent).toBe("Read more");
+  });
+});

@@ -81,8 +81,27 @@ describe("site build", () => {
     }
   });
 
-  it("Given_GivePage_When_Built_Then_LinksToEasyTithe", () => {
-    expect(pages.get("/give/")).toContain("https://app.easytithe.com/App/Giving/pollokbaptistchurch");
+  it("Given_GivePage_When_Built_Then_GiveOnlineButtonSitsAboveTheTable", () => {
+    const html = pages.get("/give/");
+    const main = html.slice(html.indexOf('id="main"'), html.indexOf('id="footer"'));
+    const button = main.indexOf('href="https://app.easytithe.com/App/Giving/pollokbaptistchurch"');
+    expect(button).toBeGreaterThan(-1);
+    expect(main).toMatch(/href="https:\/\/app\.easytithe\.com\/App\/Giving\/pollokbaptistchurch"[^>]*>Give online</);
+    expect(button).toBeLessThan(main.indexOf("<table"));
+  });
+
+  it("Given_GivePage_When_Built_Then_IsTheGivingPlatformComparisonTable", () => {
+    const html = pages.get("/give/");
+    const main = html.slice(html.indexOf('id="main"'), html.indexOf('id="footer"'));
+    expect(main.match(/<table/g)?.length).toBe(1);
+    const head = main.slice(main.indexOf("<thead"), main.indexOf("</thead>"));
+    for (const platform of ["EasyTithe (current)", "Zeffy", "Tithe.ly", "Givelify"]) {
+      expect(head, platform).toContain(platform);
+    }
+    for (const row of ["Monthly fee", "Card fee", "ACH fee", "Who pays", "Text giving", "Donor mobile app", "Rough yearly cost", "Admin rating", "Donor rating", "Common complaints"]) {
+      expect(main, row).toContain(`<th scope="row">${row}</th>`);
+    }
+    expect(main).not.toContain("Ways to give");
   });
 
   it("Given_EventsAndAnnouncementsPages_When_Built_Then_HaveMountPointsAndModuleScripts", () => {
@@ -98,6 +117,8 @@ describe("site build", () => {
     expect(html.indexOf('id="notice-bar"')).toBeLessThan(html.indexOf("Coming Up"));
     expect(html.indexOf('id="notice-bar"')).toBeGreaterThan(html.indexOf('id="main"'));
     expect(html).toMatch(/id="home-events"[^>]*data-limit="4"/);
+    expect(html).toMatch(/id="home-events"[^>]*class="[^"]*notice-bar[^"]*event-rotator/);
+    expect(html).not.toContain("upcoming-events");
     expect(html).not.toContain('id="home-announcements"');
     expect(html).not.toContain("Latest announcements");
   });
@@ -143,11 +164,6 @@ describe("site build", () => {
     expect(html).toContain("church office");
   });
 
-  it("Given_GivePage_When_Built_Then_WaysToGiveSitsInTwoColumns", () => {
-    const html = pages.get("/give/");
-    const ways = html.slice(html.indexOf("Ways to give"));
-    expect(ways.match(/class="col-6 col-12-small"/g)?.length).toBe(2);
-  });
 
   it("Given_EveryPage_When_Built_Then_UsesTheMassivelyLayout", () => {
     for (const url of EXPECTED_PAGES) {
@@ -158,6 +174,18 @@ describe("site build", () => {
       expect(html, url).toContain('href="/assets/css/main.css"');
       expect(html.indexOf('href="/assets/css/main.css"'), url).toBeLessThan(html.indexOf('href="/assets/css/site.css"'));
       expect(html, url).toContain('src="/assets/js/massively/main.js"');
+    }
+  });
+
+  it("Given_EveryPage_When_Built_Then_NavIconsStartWithFacebookBeforePhone", () => {
+    for (const url of EXPECTED_PAGES) {
+      const html = pages.get(url);
+      const icons = html.slice(html.indexOf('<ul class="icons">'), html.indexOf("</nav>"));
+      const facebook = icons.indexOf('href="https://www.facebook.com/pollokchurch"');
+      expect(facebook, `${url} lacks the Facebook icon`).toBeGreaterThan(-1);
+      expect(facebook, url).toBeLessThan(icons.indexOf('href="tel:'));
+      expect(icons, url).toMatch(/href="https:\/\/www\.facebook\.com\/pollokchurch"[^>]*class="icon brands fa-facebook-f"/);
+      expect(icons, url).toContain('<span class="label">Facebook</span>');
     }
   });
 

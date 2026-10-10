@@ -1,31 +1,133 @@
 ---
 layout: base.njk
 title: Give
-description: Ways to give to Pollok Baptist Church, online through EasyTithe, in person on Sunday, or by mail.
+description: Online giving platforms compared for Pollok Baptist Church - fees, features and ratings for EasyTithe, Zeffy, Tithe.ly and Givelify.
 ---
-{% set post = { heading: "Give", tagline: "Every contribution supports our mission" } %}
+{% set post = { heading: "Give" } %}
 {% include "post-header.njk" %}
 
-  <p class="text-center">Giving is an integral part of the Pollok Baptist Church experience, reflecting our commitment to extending Christ's love beyond the church walls.</p>
   <ul class="actions special">
     <li><a class="button primary large" href="{{ site.giving.easyTitheUrl }}" target="_blank" rel="noopener">Give online</a></li>
   </ul>
   <p class="small text-center">Online giving is handled securely by EasyTithe and opens in a new tab.</p>
-</section>
 
-<section>
-  <header class="major">
-    <h2>Ways to give</h2>
-  </header>
-  <div class="row gtr-uniform text-center">
-    <div class="col-6 col-12-small">
-      <h3>Sunday services</h3>
-      <p>Simply place cash or checks in the offering plate during any Sunday service.</p>
-    </div>
-    <div class="col-6 col-12-small">
-      <h3>Mail</h3>
-      <p>Send your donation to the church office:</p>
-      <p>{{ site.name }}<br>{{ site.mailingAddress.line1 }}<br>{{ site.mailingAddress.city }}, {{ site.mailingAddress.state }} {{ site.mailingAddress.zip }}</p>
-    </div>
+  <div class="table-wrapper">
+    <table class="giving-compare">
+      <caption>Online giving platforms compared. Prices and ratings checked September 30, 2026.</caption>
+      <thead>
+        <tr>
+          <td></td>
+          <th scope="col">EasyTithe (current)</th>
+          <th scope="col">Zeffy</th>
+          <th scope="col">Tithe.ly</th>
+          <th scope="col">Givelify</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Monthly fee</th>
+          <td>$19 Small Church + $10 processing minimum</td>
+          <td>$0</td>
+          <td>$0 (giving-only plan)</td>
+          <td>$0</td>
+        </tr>
+        <tr>
+          <th scope="row">Card fee</th>
+          <td>3.0% + 42&cent;</td>
+          <td>0%</td>
+          <td>2.9% + 30&cent; (Amex 3.5%)</td>
+          <td>2.9% + 30&cent;</td>
+        </tr>
+        <tr>
+          <th scope="row">ACH fee</th>
+          <td>1.0% + 42&cent;</td>
+          <td>0%</td>
+          <td>1.0% + 30&cent;</td>
+          <td>Card-focused; confirm ACH</td>
+        </tr>
+        <tr>
+          <th scope="row">Who pays</th>
+          <td>Church; donor may cover</td>
+          <td>Donor asked to tip Zeffy (default ~10&ndash;15%)</td>
+          <td>Church; donor may cover (~60% do)</td>
+          <td>Church, deducted before deposit</td>
+        </tr>
+        <tr>
+          <th scope="row">Recurring / funds / statements</th>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <th scope="row">Text giving</th>
+          <td>$15/mo add-on</td>
+          <td>No</td>
+          <td>Included free</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <th scope="row">Donor mobile app</th>
+          <td>Yes</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>Yes, core product</td>
+        </tr>
+        <tr>
+          <th scope="row">Embed on our site</th>
+          <td>Link out</td>
+          <td>Embeddable form</td>
+          <td>Embeddable widget</td>
+          <td>Link/button out</td>
+        </tr>
+        <tr>
+          <th scope="row">Grows into church management</th>
+          <td>Ministry Brands, extra</td>
+          <td>No</td>
+          <td>$72/mo tier</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <th scope="row">Contract</th>
+          <td>Month to month</td>
+          <td>None</td>
+          <td>None</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th scope="row">Rough yearly cost</th>
+          <td>~$700</td>
+          <td>$0</td>
+          <td>~$570 (less if donors cover)</td>
+          <td>~$700 (no ACH discount)</td>
+        </tr>
+        <tr>
+          <th scope="row">Admin rating</th>
+          <td>4.1 Capterra, support 3.8</td>
+          <td>4.8 Capterra, 4.3 Trustpilot</td>
+          <td>4.7 Capterra/G2 (~700 reviews)</td>
+          <td>~4.5 Capterra</td>
+        </tr>
+        <tr>
+          <th scope="row">Donor rating</th>
+          <td>n/a</td>
+          <td>n/a, no app</td>
+          <td>Few complaints</td>
+          <td>4.9 on 135k+ app-store reviews</td>
+        </tr>
+        <tr>
+          <th scope="row">Common complaints</th>
+          <td>Long holds, slow tickets, surprise fees, periodic outages</td>
+          <td>Tip prompt not looking optional; some held funds</td>
+          <td>Back-office gripes: receipt logos, a bank error left unflagged for months</td>
+          <td>Recurring gifts stop silently on card expiry; no donor fee-cover option; weekend support gaps</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">Yearly cost assumes ~$2,000/month given online, half card and half ACH, ~40 gifts a month. Ratings are user-submitted (Capterra, G2, Trustpilot, app stores). Sources: easytithe.com/pricing, get.tithe.ly/pricing, zeffy.com/fundraise/churches, churchmemberpro.com, capterra.com, trustpilot.com, Givelify App Store listing.</td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </section>

@@ -56,6 +56,10 @@ tabs, never auto-advances for visitors with reduced motion enabled, and has prev
 buttons plus dots. Change the count with `data-limit` on `#notice-bar` in `src/index.njk`
 and the interval via `intervalMs` in `src/assets/js/lib/rotator.js`.
 
+"Coming Up" on the home page uses the same rotator for events (`#home-events`, four
+events, date and time, title and location). Its options are in `startEventRotator` in
+`src/assets/js/site.js`; `describe(item)` decides what each slide shows.
+
 ## Announcements sheet format
 
 | Title | Date | Body | ExpiresOn | Pinned |

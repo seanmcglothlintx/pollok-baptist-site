@@ -1,14 +1,32 @@
-// Text-only announcement rotator ("notice bar") for the home page.
-// Shows one announcement at a time, auto-advances on a timer, pauses on hover or
-// keyboard focus, never auto-advances under reduced motion, and always offers
+// Text-only rotator for the home page: the announcements notice bar and the
+// "Coming Up" events. Shows one item at a time, auto-advances on a timer, pauses on
+// hover or keyboard focus, never auto-advances under reduced motion, and always offers
 // previous/next buttons plus one dot per item so people can move at their own pace.
+// `describe(item)` maps an item to { meta, title, body, pinned }; the default reads an
+// announcement.
+
+function firstLine(text) {
+  const lines = (text || "").split(/\r?\n/).map((l) => l.trim()).filter((l) => l !== "");
+  if (lines.length === 0) {
+    return "";
+  }
+  return lines[0];
+}
 
 const DEFAULTS = {
   intervalMs: 8000,
   limit: 5,
+  label: "Announcements",
+  itemName: "announcement",
   moreHref: "/announcements/",
+  moreLabel: "Read more",
   reducedMotion: false,
+  describe: (item) => ({ title: item.title, body: firstLine(item.body), pinned: Boolean(item.pinned) }),
 };
+
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -19,14 +37,6 @@ function el(tag, className, text) {
     node.textContent = text;
   }
   return node;
-}
-
-function firstLine(text) {
-  const lines = (text || "").split(/\r?\n/).map((l) => l.trim()).filter((l) => l !== "");
-  if (lines.length === 0) {
-    return "";
-  }
-  return lines[0];
 }
 
 export function createRotator(container, allItems, options = {}) {
@@ -44,7 +54,7 @@ export function createRotator(container, allItems, options = {}) {
 
   container.hidden = false;
   container.setAttribute("aria-roledescription", "carousel");
-  container.setAttribute("aria-label", "Announcements");
+  container.setAttribute("aria-label", opts.label);
 
   const hasMany = items.length > 1;
   let index = 0;
@@ -58,17 +68,19 @@ export function createRotator(container, allItems, options = {}) {
   if (hasMany) {
     prevButton = el("button", "notice-bar__nav notice-bar__prev", "‹");
     prevButton.type = "button";
-    prevButton.setAttribute("aria-label", "Previous announcement");
+    prevButton.setAttribute("aria-label", `Previous ${opts.itemName}`);
     row.appendChild(prevButton);
   }
 
   const live = el("div", "notice-bar__item");
   live.setAttribute("aria-live", "polite");
   live.setAttribute("aria-atomic", "true");
+  const meta = el("span", "notice-bar__meta");
   const title = el("span", "notice-bar__title");
   const body = el("span", "notice-bar__body");
-  const more = el("a", "notice-bar__more", "Read more");
+  const more = el("a", "notice-bar__more", opts.moreLabel);
   more.setAttribute("href", opts.moreHref);
+  live.appendChild(meta);
   live.appendChild(title);
   live.appendChild(body);
   live.appendChild(more);
@@ -77,7 +89,7 @@ export function createRotator(container, allItems, options = {}) {
   if (hasMany) {
     nextButton = el("button", "notice-bar__nav notice-bar__next", "›");
     nextButton.type = "button";
-    nextButton.setAttribute("aria-label", "Next announcement");
+    nextButton.setAttribute("aria-label", `Next ${opts.itemName}`);
     row.appendChild(nextButton);
   }
   container.appendChild(row);
@@ -90,7 +102,7 @@ export function createRotator(container, allItems, options = {}) {
       const dot = el("button", "notice-bar__dot", String(i + 1));
       dot.type = "button";
       dot.setAttribute("role", "tab");
-      dot.setAttribute("aria-label", `Announcement ${i + 1} of ${items.length}`);
+      dot.setAttribute("aria-label", `${capitalize(opts.itemName)} ${i + 1} of ${items.length}`);
       dot.addEventListener("click", () => {
         goTo(i);
         restartTimer();
@@ -103,10 +115,12 @@ export function createRotator(container, allItems, options = {}) {
 
   function show(i) {
     index = i;
-    const item = items[index];
-    title.textContent = item.title;
-    body.textContent = firstLine(item.body);
-    live.classList.toggle("notice-bar__item--pinned", Boolean(item.pinned));
+    const slide = opts.describe(items[index]);
+    meta.textContent = slide.meta || "";
+    meta.hidden = !slide.meta;
+    title.textContent = slide.title || "";
+    body.textContent = slide.body || "";
+    live.classList.toggle("notice-bar__item--pinned", Boolean(slide.pinned));
     dots.forEach((dot, d) => {
       if (d === index) {
         dot.setAttribute("aria-current", "true");

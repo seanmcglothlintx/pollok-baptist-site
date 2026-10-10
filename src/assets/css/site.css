@@ -217,20 +217,35 @@
 
 /* ---------- Events ---------- */
 
-.upcoming-events {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 2rem 2.5rem;
-  margin-bottom: 2rem;
+/* "Coming Up" on the home page reuses the notice-bar rotator, one event at a time. */
+.notice-bar__meta {
+  flex-basis: 100%;
+  color: var(--accent);
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
 }
 
-.upcoming-events .event-day {
-  margin-bottom: 0;
+.event-rotator {
+  margin-bottom: 1rem;
+  padding: 2rem 1rem 1.5rem;
+  border: solid 2px var(--line);
 }
 
-.upcoming-events .event {
-  grid-template-columns: 1fr;
-  gap: 0.25rem;
+.event-rotator .notice-bar__item {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-rotator .notice-bar__title {
+  font-size: 1.5rem;
+}
+
+.event-rotator .notice-bar__more {
+  display: none;
 }
 
 .event-day {
@@ -370,6 +385,42 @@
   border: 0;
 }
 
+/* ---------- Give: platform comparison ---------- */
+
+.giving-compare {
+  font-size: 0.85rem;
+}
+
+.giving-compare caption {
+  caption-side: top;
+  text-align: left;
+  color: var(--muted);
+  font-style: italic;
+  padding-bottom: 1rem;
+}
+
+/* Massively pads th differently from td; match them so labels line up with values. */
+.giving-compare th[scope="row"] {
+  padding: 0.75em;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.giving-compare td {
+  vertical-align: top;
+}
+
+.giving-compare thead th:nth-child(2),
+.giving-compare tbody td:nth-child(2) {
+  background: rgba(24, 191, 239, 0.08);
+}
+
+.giving-compare tfoot td {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: left;
+}
+
 /* ---------- Responsive ---------- */
 
 @media screen and (max-width: 980px) {
@@ -418,5 +469,15 @@
   .event {
     grid-template-columns: 1fr;
     gap: 0.25rem;
+  }
+
+  /* Phones scroll the table sideways; let row labels wrap so values get the room. */
+  .giving-compare th[scope="row"] {
+    white-space: normal;
+    min-width: 7rem;
+  }
+
+  .giving-compare td {
+    min-width: 9rem;
   }
 }

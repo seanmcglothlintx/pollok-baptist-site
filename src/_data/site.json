@@ -18,6 +18,7 @@
   "phone": "(936) 287-1033",
   "phoneHref": "tel:+19362871033",
   "email": "emily@pollokbaptist.org",
+  "facebookUrl": "https://www.facebook.com/pollokchurch",
 
   "serviceTimes": [
     { "label": "Sunday Worship", "time": "10:45 AM" }
